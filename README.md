@@ -71,3 +71,18 @@ journalctl -u argononeup-automatic-shutdown.service -f
 - The service is installed as a system service and starts at boot.
 - SSH session detection is based on `who` output.
 - If your desktop environment is not GNOME/Mutter, idle detection in this script may not work.
+
+
+## Contributing
+
+Contributions are welcome.
+
+Please:
+
+- keep the pull requests focused and consistent with the existing style
+- update the documentation when the behaviour changes
+
+## License
+
+Licensed under the GNU General Public License v3.0 or later.
+See [LICENSE](./LICENSE) for details.
