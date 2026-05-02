@@ -1,0 +1,10 @@
+[Unit]
+Description=Auto poweroff after 30 min idle and no SSH
+After=graphical-session.target
+
+[Service]
+ExecStart=/usr/local/bin/argononeup-automatic-shutdown
+Restart=always
+
+[Install]
+WantedBy=default.target
