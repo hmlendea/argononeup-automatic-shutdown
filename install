@@ -1,0 +1,28 @@
+#!/usr/bin/bash
+set -euo pipefail
+
+SERVICE_NAME='argononeup-automatic-shutdown.service'
+SCRIPT_NAME='argononeup-automatic-shutdown'
+
+SCRIPT_SOURCE='./argononeup-automatic-shutdown.sh'
+SERVICE_SOURCE='./argononeup-automatic-shutdown.service'
+
+SCRIPT_DESTINATION="/usr/local/bin/${SCRIPT_NAME}"
+SERVICE_DESTINATION="/etc/systemd/system/${SERVICE_NAME}"
+
+USER_NAME="$(logname)"
+USER_ID="$(id -u "${USER_NAME}")"
+
+echo 'Installing the script...'
+sudo install -m 755 "${SCRIPT_SOURCE}" "${SCRIPT_DESTINATION}"
+
+echo 'Installing the systemd service...'
+sudo cp "${SERVICE_SOURCE}" "${SERVICE_DESTINATION}"
+
+echo 'Reloading systemd...'
+sudo systemctl daemon-reload
+
+echo 'Enabling the service...'
+sudo systemctl enable --now "${SERVICE_NAME}"
+
+echo 'Done!'

@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+set -euo pipefail
+
+SERVICE_NAME='argononeup-automatic-shutdown.service'
+SCRIPT_PATH='/usr/local/bin/argononeup-automatic-shutdown'
+SERVICE_PATH="/etc/systemd/system/${SERVICE_NAME}"
+
+echo 'Stopping the service (if running)...'
+sudo systemctl disable --now "${SERVICE_NAME}" 2>/dev/null || true
+
+echo 'Removing service file...'
+sudo rm -f "${SERVICE_PATH}"
+
+echo 'Removing script...'
+sudo rm -f "${SCRIPT_PATH}"
+
+echo 'Reloading systemd...'
+sudo systemctl daemon-reload
+
+echo 'Done!'
