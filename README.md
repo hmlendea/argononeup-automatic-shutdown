@@ -6,6 +6,8 @@
 
 Automatically powers off the machine when it has been idle for about 30 minutes **and** there are no active SSH sessions.
 
+This is intended for the **Argon ONE UP CM5** laptop, to help save battery power: the device does not currently support sleep, so it remains continuously on by default.
+
 This project installs:
 - A script at `/usr/local/bin/argononeup-automatic-shutdown`
 - A systemd service at `/etc/systemd/system/argononeup-automatic-shutdown.service`
