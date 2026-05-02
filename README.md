@@ -1,3 +1,7 @@
+[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html)
+[![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/argononeup-automatic-shutdown)](https://github.com/hmlendea/argononeup-automatic-shutdown/releases/latest)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://gnu.org/licenses/gpl-3.0)
+
 # argononeup-automatic-shutdown
 
 Automatically powers off the machine when it has been idle for about 30 minutes **and** there are no active SSH sessions.
