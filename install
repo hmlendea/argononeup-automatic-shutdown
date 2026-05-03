@@ -1,28 +1,40 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
-SERVICE_NAME='argononeup-automatic-shutdown.service'
+command -v install >/dev/null || { echo 'install command not found' >&2; exit 1; }
+
 SCRIPT_NAME='argononeup-automatic-shutdown'
+SERVICE_NAME='argononeup-automatic-shutdown.service'
 
-SCRIPT_SOURCE='./argononeup-automatic-shutdown.sh'
-SERVICE_SOURCE='./argononeup-automatic-shutdown.service'
+SCRIPT_SOURCE="./${SCRIPT_NAME}.sh"
+SERVICE_SOURCE="./${SERVICE_NAME}"
 
-SCRIPT_DESTINATION="/usr/local/bin/${SCRIPT_NAME}"
-SERVICE_DESTINATION="/etc/systemd/system/${SERVICE_NAME}"
+[[ -f "${SCRIPT_SOURCE}" ]] || { echo "Missing file: ${SCRIPT_SOURCE}" >&2; exit 1; }
+[[ -f "${SERVICE_SOURCE}" ]] || { echo "Missing file: ${SERVICE_SOURCE}" >&2; exit 1; }
 
-USER_NAME="$(logname)"
-USER_ID="$(id -u "${USER_NAME}")"
+SCRIPT_DESTINATION="${HOME}/.local/bin/${SCRIPT_NAME}"
+SERVICE_DESTINATION="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/${SERVICE_NAME}"
 
-echo 'Installing the script...'
-sudo install -m 755 "${SCRIPT_SOURCE}" "${SCRIPT_DESTINATION}"
+install_file() {
+    local SOURCE_FILE_PATH="${1}"
+    local DESTINATION_FILE_PATH="${2}"
+    local FILE_MODE="${3:-644}"
 
-echo 'Installing the systemd service...'
-sudo cp "${SERVICE_SOURCE}" "${SERVICE_DESTINATION}"
+    echo "Installing '${SOURCE_FILE_PATH}' → '${DESTINATION_FILE_PATH}'..."
+    mkdir -p "$(dirname "${DESTINATION_FILE_PATH}")"
+    install -m "${FILE_MODE}" "${SOURCE_FILE_PATH}" "${DESTINATION_FILE_PATH}"
+}
+
+install_file "${SCRIPT_SOURCE}" "${SCRIPT_DESTINATION}" 755
+install_file "${SERVICE_SOURCE}" "${SERVICE_DESTINATION}" 644
 
 echo 'Reloading systemd...'
-sudo systemctl daemon-reload
+systemctl --user daemon-reload || {
+    echo 'Failed to reload systemd user daemon' >&2
+    exit 1
+}
 
-echo 'Enabling the service...'
-sudo systemctl enable --now "${SERVICE_NAME}"
+echo 'Enabling and starting the service...'
+systemctl --user enable --now "${SERVICE_NAME}"
 
 echo 'Done!'
