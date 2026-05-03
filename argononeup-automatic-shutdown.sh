@@ -17,9 +17,8 @@ has_active_ssh_connections() {
 
 while true; do
     IDLE_TIME_MS=$(get_idle_time_ms)
-    echo "${IDLE_TIME_MS}"
 
-    if (( IDLE_TIME_MS >= THRESHOLD )); then
+    if (( IDLE_TIME_MS >= THRESHOLD_MS )); then
         if ! has_active_ssh_connections; then
             sleep 5
 
