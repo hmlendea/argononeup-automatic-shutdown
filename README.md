@@ -9,10 +9,10 @@ Automatically powers off the machine when it has been idle for about 30 minutes 
 This is intended for the **Argon ONE UP CM5** laptop, to help save battery power: the device does not currently support sleep, so it remains continuously on by default.
 
 This project installs:
-- A script at `/usr/local/bin/argononeup-automatic-shutdown`
-- A systemd service at `/etc/systemd/system/argononeup-automatic-shutdown.service`
+- A script at `~/.local/bin/argononeup-automatic-shutdown`
+- A user systemd service at `~/.config/systemd/user/argononeup-automatic-shutdown.service`
 
-The service is enabled and started immediately on install.
+The service is enabled and started immediately on install, and will automatically restart if it exits unexpectedly.
 
 ## How it works
 
@@ -23,9 +23,10 @@ The script runs in a loop and:
 
 ## Requirements
 
-- Linux with `systemd`
+- Linux with `systemd` (user-level systemd service support)
 - GNOME session (uses Mutter idle monitor over D-Bus)
-- `bash`, `gdbus`, `sed`, `grep`, `who`, `sudo`
+- `bash`, `gdbus`, `sed`, `grep`, `who`
+- Standard Unix utilities (`install`, `mkdir`)
 
 ## Install
 
@@ -37,10 +38,11 @@ chmod +x install uninstall argononeup-automatic-shutdown.sh
 ```
 
 What `install` does:
-- Copies `argononeup-automatic-shutdown.sh` to `/usr/local/bin/argononeup-automatic-shutdown`
-- Copies `argononeup-automatic-shutdown.service` to `/etc/systemd/system/`
-- Runs `systemctl daemon-reload`
-- Enables and starts the service with `systemctl enable --now`
+- Copies `argononeup-automatic-shutdown.sh` to `~/.local/bin/argononeup-automatic-shutdown` (user-local)
+- Copies `argononeup-automatic-shutdown.service` to `~/.config/systemd/user/` (user-level systemd)
+- Runs `systemctl --user daemon-reload`
+- Enables and starts the service with `systemctl --user enable --now`
+- No `sudo` required
 
 ## Uninstall
 
@@ -52,27 +54,36 @@ From the repository directory:
 
 What `uninstall` does:
 - Disables and stops the service (if running)
-- Removes `/etc/systemd/system/argononeup-automatic-shutdown.service`
-- Removes `/usr/local/bin/argononeup-automatic-shutdown`
-- Runs `systemctl daemon-reload`
+- Removes `~/.config/systemd/user/argononeup-automatic-shutdown.service`
+- Removes `~/.local/bin/argononeup-automatic-shutdown`
+- Runs `systemctl --user daemon-reload`
+- No `sudo` required
 
 ## Verify status
 
 ```bash
-systemctl status argononeup-automatic-shutdown.service
+systemctl --user status argononeup-automatic-shutdown.service
 ```
 
 ## View logs
 
 ```bash
-journalctl -u argononeup-automatic-shutdown.service -f
+journalctl --user -u argononeup-automatic-shutdown.service -f
+```
+
+Or view recent logs:
+
+```bash
+journalctl --user -u argononeup-automatic-shutdown.service -n 50
 ```
 
 ## Notes
 
-- The service is installed as a system service and starts at boot.
+- The service is a **user-level service** and is tied to the graphical session. It starts when you log in and stops when you log out.
 - SSH session detection is based on `who` output.
 - If your desktop environment is not GNOME/Mutter, idle detection in this script may not work.
+- The service automatically restarts if it crashes, with a 10-second delay between restarts.
+- Logs are sent to the systemd journal and can be viewed with `journalctl --user`.
 
 
 ## Contributing
