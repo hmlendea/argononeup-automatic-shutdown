@@ -4,7 +4,7 @@
 
 # argononeup-automatic-shutdown
 
-Automatically powers off the machine when it has been idle for about 30 minutes **and** there are no active SSH sessions.
+Automatically powers off the machine when it has been idle for about 30 minutes, there are no active SSH sessions, and the battery is not charging.
 
 This is intended for the **Argon ONE UP CM5** laptop, to help save battery power: the device does not currently support sleep, so it remains continuously on by default.
 
@@ -19,7 +19,10 @@ The service is enabled and started immediately on install, and will automaticall
 The script runs in a loop and:
 1. Queries GNOME's idle monitor over D-Bus (`org.gnome.Mutter.IdleMonitor`) to get idle time.
 2. Checks for active SSH sessions (`who`).
-3. If idle time is over the threshold and no SSH sessions are active, it powers off the machine.
+3. Checks battery charging state from `/sys/class/power_supply/BAT0/status`.
+4. If battery status is `Charging`, shutdown is skipped.
+5. If charging has just stopped, shutdown is still skipped for up to 5 minutes after the last `Charging` state.
+6. If idle time is over the threshold, no SSH sessions are active, and charging/grace conditions are not active, it powers off the machine.
 
 ## Requirements
 
