@@ -4,7 +4,11 @@
 
 # argononeup-automatic-shutdown
 
-Automatically powers off the machine when it has been idle for about 30 minutes, there are no active SSH sessions, and the battery is not charging.
+Automatically powers off the machine when it has been idle long enough, there are no active SSH sessions, and the battery is not charging.
+
+The idle threshold depends on lid state:
+- About 30 minutes when the lid is open
+- About 5 minutes when the lid is closed
 
 This is intended for the **Argon ONE UP CM5** laptop, to help save battery power: the device does not currently support sleep, so it remains continuously on by default.
 
@@ -18,17 +22,19 @@ The service is enabled and started immediately on install, and will automaticall
 
 The script runs in a loop and:
 1. Queries GNOME's idle monitor over D-Bus (`org.gnome.Mutter.IdleMonitor`) to get idle time.
-2. Checks for active SSH sessions (`who`).
-3. Checks battery charging state from `/sys/class/power_supply/BAT0/status`.
-4. If battery status is `Charging`, shutdown is skipped.
-5. If charging has just stopped, shutdown is still skipped for up to 5 minutes after the last `Charging` state.
-6. If idle time is over the threshold, no SSH sessions are active, and charging/grace conditions are not active, it powers off the machine.
+2. Checks lid state using `gpioget --chip gpiochip0 GPIO27`.
+3. Selects the idle threshold based on lid state: 30 minutes if open, 5 minutes if closed.
+4. Checks for active SSH sessions (`who`).
+5. Checks battery charging state from `/sys/class/power_supply/BAT0/status`.
+6. If battery status is `Charging`, shutdown is skipped.
+7. If charging has just stopped, shutdown is still skipped for up to 5 minutes after the last `Charging` state.
+8. If idle time is over the current threshold, no SSH sessions are active, and charging/grace conditions are not active, it powers off the machine.
 
 ## Requirements
 
 - Linux with `systemd` (user-level systemd service support)
 - GNOME session (uses Mutter idle monitor over D-Bus)
-- `bash`, `gdbus`, `sed`, `grep`, `who`
+- `bash`, `gdbus`, `sed`, `grep`, `who`, `gpioget`
 - Standard Unix utilities (`install`, `mkdir`)
 
 ## Install
@@ -84,6 +90,7 @@ journalctl --user -u argononeup-automatic-shutdown.service -n 50
 
 - The service is a **user-level service** and is tied to the graphical session. It starts when you log in and stops when you log out.
 - SSH session detection is based on `who` output.
+- Lid state detection is based on `gpioget --chip gpiochip0 GPIO27`.
 - If your desktop environment is not GNOME/Mutter, idle detection in this script may not work.
 - The service automatically restarts if it crashes, with a 10-second delay between restarts.
 - Logs are sent to the systemd journal and can be viewed with `journalctl --user`.
