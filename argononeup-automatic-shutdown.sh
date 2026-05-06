@@ -27,7 +27,7 @@ is_battery_charging() {
 }
 
 is_lid_open() {
-    gpioget --chip gpiochip0 GPIO27 | grep -q '=active$'
+    gpioget --chip gpiochip0 GPIO27 | grep -q '=inactive$'
 }
 
 get_threshold() {
