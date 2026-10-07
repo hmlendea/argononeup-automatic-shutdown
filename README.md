@@ -96,6 +96,20 @@ journalctl --user -u argononeup-automatic-shutdown.service -n 50
 - Logs are sent to the systemd journal and can be viewed with `journalctl --user`.
 
 
+## Documentation
+
+Detailed technical documentation is available in the [`docs/`](./docs/) directory:
+
+| Document | Description |
+|----------|-------------|
+| [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | System architecture, components, data flow, and invariants |
+| [CAPABILITIES.md](./docs/CAPABILITIES.md) | Functional capabilities, limitations, and extensibility |
+| [EXECUTION.md](./docs/EXECUTION.md) | Complete execution traces, state machines, and failure paths |
+| [DEPENDENCIES.md](./docs/DEPENDENCIES.md) | All external dependencies with contracts and failure behaviors |
+| [TESTING.md](./docs/TESTING.md) | Manual verification procedures, test matrix, and regression checklist |
+| [OPERATIONS.md](./docs/OPERATIONS.md) | Deployment, monitoring, troubleshooting, and maintenance runbooks |
+| [QUICK_REFERENCE.md](./docs/QUICK_REFERENCE.md) | Concise command reference and key constants |
+
 ## Contributing
 
 Contributions are welcome.
