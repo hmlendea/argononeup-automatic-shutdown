@@ -126,6 +126,12 @@ See the [contributing guidelines](./CONTRIBUTING.md) for details on how to repor
 
 See the [Code of Conduct](./CODE_OF_CONDUCT.md) for the standards of conduct expected in all project spaces.
 
+## 🛡️ Privacy and Data
+
+argononeup-automatic-shutdown performs only local reads of system state (idle time, lid state, SSH sessions, battery status) and a local power-off action. It does not collect, store, or transmit personal data.
+
+For the detailed description of how the application handles privacy and personal data, see [PRIVACY.md](./PRIVACY.md).
+
 ## 📄 License
 
 This project is being distributed under the `GNU General Public License v3.0` or later.
