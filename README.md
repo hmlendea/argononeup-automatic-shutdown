@@ -110,14 +110,17 @@ Detailed technical documentation is available in the [`docs/`](./docs/) director
 | [OPERATIONS.md](./docs/OPERATIONS.md) | Deployment, monitoring, troubleshooting, and maintenance runbooks |
 | [QUICK_REFERENCE.md](./docs/QUICK_REFERENCE.md) | Concise command reference and key constants |
 
-## Contributing
+## 🤝 Contributing
 
-Contributions are welcome.
+You are welcome to submit any suggestion, feedback, or modification to this project.
 
-Please:
+When doing so, please:
+- Submit focused pull requests that conform to the existing code style
+- Maintain your branch synchronised with `master`
+- Revise the documentation when functionality changes
+- Properly test all modifications, including edge cases and error conditions
 
-- keep the pull requests focused and consistent with the existing style
-- update the documentation when the behaviour changes
+See the [contributing guidelines](./CONTRIBUTING.md) for details on how to report issues, suggest enhancements, and submit changes.
 
 ## License
 
