@@ -122,3 +122,7 @@ journalctl --user -u argononeup-automatic-shutdown.service -n 50
 ## 📄 License
 
 By contributing, you agree that your contributions will be licensed under the GNU General Public License v3.0.
+
+## 🔒 Security
+
+Report security vulnerabilities per the [Security Policy](./SECURITY.md).
