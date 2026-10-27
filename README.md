@@ -132,6 +132,12 @@ argononeup-automatic-shutdown performs only local reads of system state (idle ti
 
 For the detailed description of how the application handles privacy and personal data, see [PRIVACY.md](./PRIVACY.md).
 
+## 🔒 Security
+
+argononeup-automatic-shutdown follows a coordinated disclosure process for security vulnerabilities.
+
+For information on reporting security vulnerabilities, see [SECURITY.md](./SECURITY.md).
+
 ## 📄 License
 
 This project is being distributed under the `GNU General Public License v3.0` or later.
